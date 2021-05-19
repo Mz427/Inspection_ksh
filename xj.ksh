@@ -1,5 +1,15 @@
 #!/bin/ksh
 
+function base_check
+{
+    temp_file='/tmp/$(mktemp)'
+    df -h | tee ${temp_file}
+    free -m | tee ${temp_file}
+    ping 10.
+    last | grep 'reboot' | tee ${temp_file}
+    #reboot   system boot  2.6.18-128.el5   Wed May 12 07:57         (7+02:25)
+}
+
 function disk_space_count
 {
 }
@@ -26,13 +36,6 @@ function ascaapp_check
     printf "#                                     ascaapp                                              #"
     printf "############################################################################################"
     
-    ssh asca@
-    temp_file='/tmp/$(mktemp)'
-    df -h | tee ${temp_file}
-    free -m | tee ${temp_file}
-    ping 10.
-    last | grep 'reboot' | tee ${temp_file}
-    #reboot   system boot  2.6.18-128.el5   Wed May 12 07:57         (7+02:25)
     ps -ef | grep java | tee ${temp_file}
 }
 
