@@ -2,29 +2,16 @@
 
 function base_check
 {
-    temp_file='/tmp/$(mktemp)'
+    temp_file=$(mktemp)
     mount
     df -h | tee ${temp_file}
+    awk
     free -m | tee ${temp_file}
+    awk
     ping 10.
+    awk
     last | grep 'reboot' | tee ${temp_file}
     #reboot   system boot  2.6.18-128.el5   Wed May 12 07:57         (7+02:25)
-}
-
-function disk_space_count
-{
-}
-
-function memery_space_count
-{
-}
-
-function if_reboot
-{
-}
-
-function network_status
-{
 }
 
 function database_status
