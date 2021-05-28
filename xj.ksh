@@ -26,7 +26,7 @@ function base_check
     {
         if ($5 >= 90)
         {
-            printf "%s WARNING: %s has space over %d%.\n", current_host, $1, $5
+            printf "%s WARNING: %s used over %d%.\n", current_host, $1, $5
             disk_health = 0
         }
     }
@@ -42,14 +42,14 @@ function base_check
     BEGIN{
         memery_health = 1
     }
-    NR==2{
+    NR == 2{
         memery_total = $2
     }
-    NR==3{
+    NR == 3{
         memery_used = $3 / memery_total * 100 
         if (memery_used >= 90)
         {
-            printf "%s WARNING: memery_space over %d%.\n", current_host, memery_used
+            printf "%s WARNING: memery used over %.2f%%.\n", current_host, memery_used
             memery_health = 0
         }
     }
@@ -61,11 +61,24 @@ function base_check
     }'
 
     #Check network.
-    ping 10.  awk
+    #ping 
 
     #Check login record.
     #reboot   system boot  2.6.18-128.el5   Wed May 12 07:57         (7+02:25)
-    last | grep 'reboot' | tee ${temp_file}
+    last -s $(date -d "1 day ago" "+%Y%m%d" )| awk -v current_host=$(uname -m) '
+    BEGIN{
+        login_health = 1
+    }
+    /reboot/{
+        printf "%s WARNING: rebooted since 24 hours.\n", current_host
+        login_health = 0
+    }
+    END{
+        if (login_health == 1)
+        {
+            printf "%s login_record: OK.\n", current_host
+        }
+    }'
 }
 
 function database_status
