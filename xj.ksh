@@ -91,9 +91,11 @@ function ascaapp_check
     printf "#                                     ascaapp                                              #\n"
     printf "############################################################################################\n"
     
-    if test $(ps -ef | grep java | wc -l) st 2
+    if test $(ps -ef | grep 'java' | grep -v 'grep' | wc -l) -eq 2
     then
-        printf "ascaapp warning!" 
+        printf "ascaapp precess: OK.\n" 
+    else
+        printf "ascaapp WARNING: no java process.\n"
     fi
 }
 
@@ -112,9 +114,11 @@ function idsysapp_check
     printf "#                                        idsysapp                                          #\n"
     printf "############################################################################################\n"
 
-    if test $(ps -ef | grep java | wc -l) st 2
+    if test $(ps -ef | grep 'java' | grep -v 'grep' | wc -l) -eq 2
     then
-        printf "ascaapp warning!" 
+        printf "idsysapp precess: OK.\n" 
+    else
+        printf "idsysapp WARNING: no java process.\n"
     fi
 }
 
@@ -127,16 +131,22 @@ function IDSYS_check
     database_status
 }
 
-while getops ah:v current_opt
-do
-    case ${current_opt} in
-        a)
-        ;;
-        h)
-        ;;
-        v)
-        ;;
-        *)
-        ;;
-    esac
-done
+awk '' hosts_list.conf
+for
+if test ${#} gt 0
+then
+    while getops n:h:v current_opt
+    do
+        case ${current_opt} in
+            n)
+            ;;
+            h)
+            ;;
+            v)
+            ;;
+            *)
+            ;;
+        esac
+    done
+else
+fi
