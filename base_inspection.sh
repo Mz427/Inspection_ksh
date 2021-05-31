@@ -1,6 +1,10 @@
 #!/bin/bash
 #This is a base inspection script.
 
+printf "############################################################################################\n"
+printf "#                                            %s                                            #\n", $(uname -n)
+printf "############################################################################################\n"
+
 #Check filesystem partiton.
 cat /proc/mounts | awk -v current_host=$(uname -n) '
 BEGIN{

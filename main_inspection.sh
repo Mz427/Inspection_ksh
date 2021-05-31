@@ -1,56 +1,8 @@
 #!/bin/ksh
 
-function database_status
-{
-}
+declare -A hosts_list
 
-function ascaapp_check
-{
-    printf "############################################################################################\n"
-    printf "#                                     ascaapp                                              #\n"
-    printf "############################################################################################\n"
-
-    if test $(ps -ef | grep 'java' | grep -v 'grep' | wc -l) -eq 2
-    then
-        printf "ascaapp precess: OK.\n"
-    else
-        printf "ascaapp WARNING: no java process.\n"
-    fi
-}
-
-function ASCA_check
-{
-    printf "############################################################################################\n"
-    printf "#                                        ASCA                                              #\n"
-    printf "############################################################################################\n"
-
-    database_status
-}
-
-function idsysapp_check
-{
-    printf "############################################################################################\n"
-    printf "#                                        idsysapp                                          #\n"
-    printf "############################################################################################\n"
-
-    if test $(ps -ef | grep 'java' | grep -v 'grep' | wc -l) -eq 2
-    then
-        printf "idsysapp precess: OK.\n"
-    else
-        printf "idsysapp WARNING: no java process.\n"
-    fi
-}
-
-function IDSYS_check
-{
-    printf "############################################################################################\n"
-    printf "#                                        IDSYS                                             #\n"
-    printf "############################################################################################\n"
-
-    database_status
-}
-
-awk '' hosts_list.conf
+eval $(awk 'NR > 1{printf "hosts_list[%s]=%s\n", $1, $2}' hosts_list.conf)
 
 if test ${#} gt 0
 then
@@ -68,8 +20,16 @@ then
         esac
     done
 else
-    for i in ${!hosts_list[*]}
-        ssh -T ${hosts_list[${i}]} base_check
-        ssh $u@$addr 'cat | bash /dev/stdin' "$@" < "$scriptfile"
-        hosts_list(i)
+    for i in ${!hosts_list[@]}
+    do
+        #Execute base inspection script.
+        if test -e base_inspection.sh
+            ssh -T ${hosts_list[${i}]} < base_inspection.sh
+        fi
+
+        #Execute spectify inspection script.
+        if test -e ${i}".sh"
+            ssh -T ${hosts_list[${i}]} < ${i}"i.sh"
+        fi
+    done
 fi
