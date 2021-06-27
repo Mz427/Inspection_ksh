@@ -1,6 +1,6 @@
 #!/bin/ksh
 
-declare -A hosts_list
+typeset -A hosts_list
 
 function execute_script
 {
@@ -20,7 +20,7 @@ function execute_script
     done
 }
 
-eval $(awk 'NR > 1{printf "hosts_list[%s]=%s\n", $1, $2}' hosts_list.conf)
+eval $(awk '! /^#/{printf "hosts_list[%s]=%s\n", $1, $2}' hosts_list.conf)
 
 #Main
 if test ${#} gt 0
@@ -29,16 +29,47 @@ then
     do
         case ${current_opt} in
             n)
-                execute_script ${OPTARG} host_name
+                if test hosts_list[${OPTARG}] -eq 0
+                then
+                    printf "Can't find host: %s.\n" ${OPTARG}
+                else
+                    #Execute base inspection script.
+                    if test -e base_inspection.sh
+                    then
+                        ssh -T ${hosts_list[${i}]} < base_inspection.sh
+                    fi
+
+                    #Execute spectify inspection script.
+                    if test -e ${i}".sh"
+                    then
+                        ssh -T ${hosts_list[${i}]} < ${i}".sh"
+                    fi
+                fi
             ;;
             h)
-                execute_script ${OPTARG} ip
+                for i in ${!hosts_list[@]}
+                do
+                    if test ${hosts_list[${i}]} == ${OPTARG}
+                    then
+                        #Execute base inspection script.
+                        if test -e base_inspection.sh
+                        then
+                            ssh -T ${OPTARG} < base_inspection.sh
+                        fi
+
+                        #Execute spectify inspection script.
+                        if test -e ${i}".sh"
+                        then
+                            ssh -T ${hosts_list[${i}]} < ${i}".sh"
+                        fi
+                    fi
+                done
             ;;
             v)
                 #awk error.log
             ;;
             *)
-                #print error
+                printf "Wrong parameter format."
             ;;
         esac
     done
