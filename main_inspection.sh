@@ -1,10 +1,10 @@
 #!/bin/ksh
 
-typeset -A hosts_list
+declare -A hosts_list
 
 function execute_script
 {
-    for i in ${!hosts_list[@]}
+    for i in "${!hosts_list[@]}"
     do
         #Execute base inspection script.
         if test -e base_inspection.sh
@@ -23,7 +23,7 @@ function execute_script
 eval $(awk '! /^#/{printf "hosts_list[%s]=%s\n", $1, $2}' hosts_list.conf)
 
 #Main
-if test ${#} gt 0
+if test ${#} -gt 0
 then
     while getops n:h:v current_opt
     do
@@ -49,7 +49,7 @@ then
             h)
                 for i in ${!hosts_list[@]}
                 do
-                    if test ${hosts_list[${i}]} == ${OPTARG}
+                    if test ${hosts_list[${i}]} = ${OPTARG}
                     then
                         #Execute base inspection script.
                         if test -e base_inspection.sh
