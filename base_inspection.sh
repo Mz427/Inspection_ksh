@@ -81,4 +81,4 @@ END{
     {
         printf "%s login_record: OK.\n", current_host
     }
-}
+}'
