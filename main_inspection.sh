@@ -29,20 +29,20 @@ then
     do
         case ${current_opt} in
             n)
-                if test ${hosts_list[${OPTARG}]} = ""
+                if test "${hosts_list[${OPTARG}]}"
                 then
                     printf "Can't find host: %s.\n" ${OPTARG}
                 else
                     #Execute base inspection script.
                     if test -e base_inspection.sh
                     then
-                        ssh -T ${hosts_list[${i}]} < base_inspection.sh
+                        ssh -T ${hosts_list[${OPTARG}]} < base_inspection.sh
                     fi
 
                     #Execute spectify inspection script.
-                    if test -e ${i}".sh"
+                    if test -e ${OPTARG}".sh"
                     then
-                        ssh -T ${hosts_list[${i}]} < ${i}".sh"
+                        ssh -T ${hosts_list[${OPTARG}]} < ${OPTARG}".sh"
                     fi
                 fi
             ;;
@@ -60,7 +60,7 @@ then
                         #Execute spectify inspection script.
                         if test -e ${i}".sh"
                         then
-                            ssh -T ${hosts_list[${i}]} < ${i}".sh"
+                            ssh -T ${OPTARG} < ${i}".sh"
                         fi
                     fi
                 done
