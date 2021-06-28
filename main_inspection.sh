@@ -25,11 +25,11 @@ eval $(awk '! /^#/{printf "hosts_list[%s]=%s\n", $1, $2}' hosts_list.conf)
 #Main
 if test ${#} -gt 0
 then
-    while getops n:h:v current_opt
+    while getopts n:h:v current_opt
     do
         case ${current_opt} in
             n)
-                if test hosts_list[${OPTARG}] -eq 0
+                if test ${hosts_list[${OPTARG}]} = ""
                 then
                     printf "Can't find host: %s.\n" ${OPTARG}
                 else
