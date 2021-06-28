@@ -1,4 +1,4 @@
-#!/bin/ksh
+#!/bin/bash
 
 declare -A hosts_list
 
