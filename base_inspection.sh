@@ -73,7 +73,7 @@ BEGIN{
     login_health = 1
 }
 /reboot/{
-    printf "%s WARNING: rebooted since 24 hours.\n", current_host
+    printf "%s WARNING: rebooted at %s %s %s %s.\n", current_host, $5, $6, $7, $8
     login_health = 0
 }
 END{
