@@ -68,7 +68,7 @@ END{
 
 #Check login record.
 #reboot   system boot  2.6.18-128.el5   Wed May 12 07:57         (7+02:25)
-last -s $(date -d "1 day ago" "+%Y%m%d%H%M" )| awk -v current_host=$(uname -n) '
+last -s $(date -d "1 day ago" "+%Y%m%d %T")| awk -v current_host=$(uname -n) '
 BEGIN{
     login_health = 1
 }
