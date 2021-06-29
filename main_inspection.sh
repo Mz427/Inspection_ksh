@@ -29,7 +29,7 @@ then
     do
         case ${current_opt} in
             n)
-                if test "${hosts_list[${OPTARG}]}"
+                if test ! "${hosts_list[${OPTARG}]}"
                 then
                     printf "Can't find host: %s.\n" ${OPTARG}
                 else
