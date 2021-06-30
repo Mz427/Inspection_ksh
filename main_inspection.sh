@@ -33,7 +33,7 @@ function execute_script
 eval $(awk '! /^#/{printf "hosts_list[%s]=%s\n", $1, $2}' hosts_list.conf)
 
 #Main
-if test ${#} -gt 0
+if test ${#} -eq 2
 then
     while getopts n:h:v current_opt
     do
