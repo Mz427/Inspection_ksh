@@ -6,16 +6,26 @@ function execute_script
 {
     for i in "${!hosts_list[@]}"
     do
-        #Execute base inspection script.
-        if test -e base_inspection.sh
+        if test ${1} = "all_hosts"
         then
-            ssh -T ${hosts_list[${i}]} < base_inspection.sh
+            j=${1}
+        else
+            j=${hosts_list[${i}]}
         fi
 
-        #Execute spectify inspection script.
-        if test -e ${i}".sh"
+        if test ${j} = ${1}
         then
-            ssh -T ${hosts_list[${i}]} < ${i}".sh"
+            #Execute base inspection script.
+            if test -e base_inspection.sh
+            then
+                ssh -T ${hosts_list[${i}]} < base_inspection.sh
+            fi
+
+            #Execute spectify inspection script.
+            if test -e ${i}".sh"
+            then
+                ssh -T ${OPTARG} < ${i}".sh"
+            fi
         fi
     done
 }
@@ -29,41 +39,12 @@ then
     do
         case ${current_opt} in
             n)
-                if test "${hosts_list[${OPTARG}]}"
-                then
-                    printf "Can't find host: %s.\n" ${OPTARG}
-                else
-                    #Execute base inspection script.
-                    if test -e base_inspection.sh
-                    then
-                        ssh -T ${hosts_list[${OPTARG}]} < base_inspection.sh
-                    fi
-
-                    #Execute spectify inspection script.
-                    if test -e ${OPTARG}".sh"
-                    then
-                        ssh -T ${hosts_list[${OPTARG}]} < ${OPTARG}".sh"
-                    fi
-                fi
+                current_ip=${hosts_list[${OPTARG}]}
+                execute_script ${current_ip}
             ;;
             h)
-                for i in ${!hosts_list[@]}
-                do
-                    if test ${hosts_list[${i}]} = ${OPTARG}
-                    then
-                        #Execute base inspection script.
-                        if test -e base_inspection.sh
-                        then
-                            ssh -T ${OPTARG} < base_inspection.sh
-                        fi
-
-                        #Execute spectify inspection script.
-                        if test -e ${i}".sh"
-                        then
-                            ssh -T ${OPTARG} < ${i}".sh"
-                        fi
-                    fi
-                done
+                current_ip=${OPTARG}
+                execute_script ${current_ip}
             ;;
             v)
                 #awk error.log
@@ -74,5 +55,5 @@ then
         esac
     done
 else
-    execute_script
+    execute_script all_hosts
 fi
