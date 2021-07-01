@@ -36,7 +36,7 @@ function execute_script
 
     if test ${wrong_ip} -eq ${TRUE}
     then
-        printf "Can't find host: $s.\n" ${1}
+        printf "Can't find host: %s.\n" ${1}
     fi
 }
 
@@ -54,7 +54,7 @@ then
                 then
                     execute_script ${current_ip}
                 else
-                    printf "Can't find host: $s.\n" ${current_ip}
+                    printf "Can't find host: %s.\n" ${current_ip}
                 fi
             ;;
             h)
