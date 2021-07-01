@@ -1,9 +1,13 @@
 #!/bin/bash
 
+TRUE=0
+FALSE=1
 declare -A hosts_list
 
 function execute_script
 {
+    wrong_ip=${TRUE}
+
     for i in "${!hosts_list[@]}"
     do
         if test ${1} = "all_hosts"
@@ -15,6 +19,7 @@ function execute_script
 
         if test ${j} = ${1}
         then
+            wrong_ip=${FALSE}
             #Execute base inspection script.
             if test -e base_inspection.sh
             then
@@ -28,6 +33,11 @@ function execute_script
             fi
         fi
     done
+
+    if test ${wrong_ip}
+    then
+        printf "Can't find host: $s.\n" ${1}
+    fi
 }
 
 eval $(awk '! /^#/{printf "hosts_list[%s]=%s\n", $1, $2}' hosts_list.conf)
