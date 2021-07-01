@@ -40,7 +40,12 @@ then
         case ${current_opt} in
             n)
                 current_ip=${hosts_list[${OPTARG}]}
-                execute_script ${current_ip}
+                if test ${current_ip}
+                then
+                    execute_script ${current_ip}
+                else
+                    printf "Can't find host: $s.\n" ${current_ip}
+                fi
             ;;
             h)
                 current_ip=${OPTARG}
