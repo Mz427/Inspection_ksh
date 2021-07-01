@@ -54,7 +54,7 @@ then
                 then
                     execute_script ${current_ip}
                 else
-                    printf "Can't find host: %s.\n" ${current_ip}
+                    printf "Can't find host: %s.\n" ${OPTARG}
                 fi
             ;;
             h)
