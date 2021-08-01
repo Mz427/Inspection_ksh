@@ -1,12 +1,12 @@
 #!/bin/bash
 
 #設定日誌陸徑.
-source_dir="/home/gci_home/log/"
+source_dir="/home/gcagw/gci_home/log/"
 destinatione_dir="/log_backup/"
 #获取/分區容量.
 root_capacity=$(df -h | sed -n '/\/$/s/%//p' | awk '{print $5}')
 #获取/gci_home分區容量.
-gci_home_capacity=$(df -h | sed -n '/gci_home/s/%//p' | awk '{print $5}')
+gci_home_capacity=$(df -h | sed -n '/gcagw/s/%//p' | awk '{print $5}')
 
 #判断磁盤容量已满.
 if test root_capacity -lt 85 -a gci_home_capacity -gt 90
