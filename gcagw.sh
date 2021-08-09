@@ -32,7 +32,7 @@ then
 
     #打包當天日誌文件,深圳无需執行.
     province_code=$(uname -n)
-    if test "${province_code::2}" = "44"
+    if test "${province_code:5:2}" = "44"
     then
         file_today=$(ls ${source_dir} | grep -E "${string_today:0:8}[[:digit:]]{2}.log")
         if test "${file_today}" != ""
