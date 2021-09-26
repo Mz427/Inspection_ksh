@@ -2,7 +2,7 @@
 
 #設定日誌陸徑.
 source_dir="/home/gcagw/gci_home/log/"
-destinatione_dir="/log_backup/"
+destination_dir="/log_backup/"
 string_today=$(date "+%Y%m%d%H%M")
 #获取/分區容量.
 root_capacity=$(df -h | sed -n '/\/$/s/%//p' | awk '{print $5}')
@@ -17,11 +17,11 @@ if test $(printf "${root_capacity} < 85\n" | bc) -eq 1 -a $(printf "${gci_home_c
 then
     #轉移系統自動打包的tar.gz文件.
     tar_old=$(ls ${source_dir} | grep 'log\.tar\.gz$')
-    if test "${tar_old}" != ""
+    if test -n "${tar_old}"
     then
         for i in ${tar_old}
         do
-            mv -v ${source_dir}${i} ${destinatione_dir}
+            mv -v ${source_dir}${i} ${destination_dir}
             #删除不需要的log文件.
             if test ${?} -eq 0
             then
@@ -35,9 +35,9 @@ then
     if test "${province_code::2}" = "44"
     then
         file_today=$(ls ${source_dir} | grep -E "${string_today:0:8}[[:digit:]]{2}.log")
-        if test "${file_today}" != ""
+        if test -n "${file_today}"
         then
-            for j in $(tar -czv -f ${destinatione_dir}${string_today}.log.tar.gz -C ${source_dir} ${file_today})
+            for j in $(tar -czv -f ${destination_dir}${string_today}.log.tar.gz -C ${source_dir} ${file_today})
             do
                 #删除當天不需要的log文件.
                 if test ${?} -eq 0
