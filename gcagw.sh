@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#設定日誌陸徑.
+#設定日誌路徑.
 source_dir="/home/gcagw/gci_home/log/"
 destination_dir="/log_backup/"
 string_today=$(date "+%Y%m%d%H%M")
