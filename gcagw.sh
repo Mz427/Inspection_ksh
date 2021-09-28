@@ -1,5 +1,22 @@
 #!/bin/bash
 
+#检查服务进程.
+current_host=$(uname -n)
+
+function check_process
+{
+    if test -n "$(ps -ef | grep "${1}" | grep -v "grep")"
+    then
+        printf "%s precess %s: OK.\n" ${current_host} ${1}
+    else
+        printf "%s WARNING: no %s process.\n" ${current_host} ${1}
+    fi
+}
+
+check_process server_all
+check_process server_web
+check_process gcapp_main
+
 #設定日誌路徑.
 source_dir="/home/gcagw/gci_home/log/"
 destination_dir="/log_backup/"

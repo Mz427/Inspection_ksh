@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if test $(ps -ef | grep 'java' | grep -v 'grep' | wc -l) -eq 2
+if test -n "$(ps -ef | grep 'java' | grep -v 'grep')"
 then
     printf "ascaapp precess: OK.\n"
 else

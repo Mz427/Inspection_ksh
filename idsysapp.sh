@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if test $(ps -ef | grep 'java' | grep -v 'grep' | wc -l) -eq 2
+current_host=$(uname -n)
+
+if test -n "$(ps -ef | grep 'java' | grep -v 'grep')"
 then
-    printf "idsysapp precess: OK.\n"
+    printf "%s precess: OK.\n" ${current_host}
 else
-    printf "idsysapp WARNING: no java process.\n"
+    printf "%s WARNING: no java process.\n" ${current_host}
 fi
