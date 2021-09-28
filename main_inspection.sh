@@ -65,7 +65,7 @@ then
                 #awk error.log
             ;;
             *)
-                printf "Wrong parameter format."
+                printf "Wrong parameter format.\n"
             ;;
         esac
     done

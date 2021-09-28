@@ -4,7 +4,7 @@ current_host=$(uname -n)
 date_database_log=/opt/sybase-12.5/ASE-12_5/install/asca.log
 date_today=$(date +"%Y%m%d")
 date_yesterday=$(date -d "1 day ago" +"%Y%m%d")
-date_database_log=$(ls -l --time-style '+%Y%m%d' ${sybase_log} | cut -d ' ' -f 6)
+date_database_log=$(ls -l --time-style '+%Y%m%d' ${sybase_log} | awk '{print $6}')
 
 if test "${date_database_log}" = "${date_today}" -o "${date_database_log}" = "${date_yesterday}"
 then
@@ -13,16 +13,14 @@ else
     printf "%s sybase log: ok.\n"
 fi
 
-/opt/sybase-12.5/OCS-12_5/bin/isql -U sa -P sZ14Sjk6 -S asca -w 1000 | \
+/opt/sybase-12.5/OCS-12_5/bin/isql -U sa -P sZ14Sjk6 -S asca -w 1000 << EOF | \
 awk -v current_host=${current_host} '
-BEGIN
-{
+BEGIN {
 
 }
-/ASCAOIL/
-{
+/ASCAOIL/ {
     printf
-}' << EOF
+}'
 sp_helpdb ASCAOIL
 go
 sp_helpdb master

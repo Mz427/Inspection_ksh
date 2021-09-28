@@ -7,14 +7,14 @@ printf "########################################################################
 
 #Check filesystem partiton.
 cat /proc/mounts | awk -v current_host=$(uname -n) '
-BEGIN{
+BEGIN {
     fs_health = 1
 }
-$4 ~ /^ro/{
+$4 ~ /^ro/ {
     printf "%s WARNING: %s filesystem read only.\n", current_host, $2
     fs_health = 0
 }
-END{
+END {
     if (fs_health == 1)
     {
         printf "%s filesystem: OK.\n", current_host
@@ -23,7 +23,7 @@ END{
 
 #Check disk space.
 df -h | sed '1d; s/%//' | awk -v current_host=$(uname -n) '
-BEGIN{
+BEGIN {
     disk_health = 1
 }
 {
@@ -33,7 +33,7 @@ BEGIN{
         disk_health = 0
     }
 }
-END{
+END {
     if (disk_health == 1)
     {
         printf "%s disk_space: OK.\n", current_host
@@ -42,13 +42,13 @@ END{
 
 #Check memery space.
 free -m | awk -v current_host=$(uname -n) '
-BEGIN{
+BEGIN {
     memery_health = 1
 }
-NR == 2{
+NR == 2 {
     memery_total = $2
 }
-NR == 3{
+NR == 3 {
     memery_used = $3 / memery_total * 100
     if (memery_used >= 90)
     {
@@ -56,7 +56,7 @@ NR == 3{
         memery_health = 0
     }
 }
-END{
+END {
     if (memery_health == 1)
     {
         printf "%s memery_space: OK.\n", current_host
@@ -69,14 +69,14 @@ END{
 #Check login record.
 #reboot   system boot  2.6.18-128.el5   Wed May 12 07:57         (7+02:25)
 last -s $(date -d "1 day ago" "+%Y-%m-%d")| awk -v current_host=$(uname -n) '
-BEGIN{
+BEGIN {
     login_health = 1
 }
-/reboot/{
+/reboot/ {
     printf "%s WARNING: rebooted at %s %s %s %s.\n", current_host, $5, $6, $7, $8
     login_health = 0
 }
-END{
+END {
     if (login_health == 1)
     {
         printf "%s login_record: OK.\n", current_host
