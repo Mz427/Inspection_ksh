@@ -1,9 +1,10 @@
 #!/bin/tcsh
 #Batch rename files.
+#eg: myrename --before string1 --after string2 [directory]
 
 set 
 
-getops
+getopts
 if (before_name == NULL || after_name == NULL) then
     exit
 else
