@@ -20,13 +20,13 @@ function execute_script
         if test ${j} = ${1}
         then
             wrong_ip=${FALSE}
-            #Execute base inspection script.
+            # Execute base inspection script.
             if test -e base_inspection.sh
             then
                 ssh -T ${hosts_list[${i}]} < base_inspection.sh
             fi
 
-            #Execute spectify inspection script.
+            # Execute spectify inspection script.
             if test -e ${i}".sh"
             then
                 ssh -T ${OPTARG} < ${i}".sh"
@@ -42,7 +42,7 @@ function execute_script
 
 eval $(awk '! /^#/{printf "hosts_list[%s]=%s\n", $1, $2}' hosts_list.conf)
 
-#Main
+# Main
 if test ${#} -eq 2
 then
     while getopts n:h:v current_opt
@@ -62,7 +62,7 @@ then
                 execute_script ${current_ip}
             ;;
             v)
-                #awk error.log
+                # awk error.log
             ;;
             *)
                 printf "Wrong parameter format.\n"
