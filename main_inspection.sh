@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 TRUE=0
 FALSE=1

@@ -1,5 +1,6 @@
 #!/bin/bash
 # This is a base inspection script.
+set -e
 
 printf "############################################################################################\n"
 printf "#                                            %s                                             \n" $(uname -n)
@@ -71,14 +72,6 @@ END {
 }'
 
 # Check network.
-# PING 10.0.0.1 (10.10.0.1) 56(84) bytes of data.
-# 64 bytes from 10.199.200.139: icmp_seq=1 ttl=64 time=1.48 ms
-# 64 bytes from 10.199.200.139: icmp_seq=2 ttl=64 time=0.161 ms
-# 64 bytes from 10.199.200.139: icmp_seq=3 ttl=64 time=0.245 ms
-#
-# --- 10.199.200.139 ping statistics ---
-# 3 packets transmitted, 3 received, 0% packet loss, time 1999ms
-# rtt min/avg/max/mdev = 0.161/0.629/1.482/0.604 ms
 
 # Check time synchronization.
 
